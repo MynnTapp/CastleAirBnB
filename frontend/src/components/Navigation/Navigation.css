@@ -1,0 +1,19 @@
+/* frontend/src/components/Navigation/Navigation.css */
+
+ul {
+  list-style: none;
+  display: flex;
+}
+
+.profile-dropdown {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden {
+  display: none;
+}
