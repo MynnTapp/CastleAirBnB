@@ -5,6 +5,8 @@ import * as sessionActions from "../../store/sessions";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
+import "./LoginForm.css";
+
 function LoginFormPage() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
