@@ -2,7 +2,6 @@ import { FaModx } from "react-icons/fa6";
 
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { FaUserCircle } from "react-icons/fa";
 import * as sessionActions from "../../store/session";
 
 function ProfileButton({ user }) {
