@@ -1,12 +1,13 @@
 // backend/routes/api/session.js
 const express = require("express");
-const { Op } = require("sequelize");
+const { Sequelize, Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
-const { User } = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const router = express.Router();
+
+const { User, Spot, Review, SpotImage } = require("../../db/models");
 
 // Middleware
 const validateLogin = [
@@ -51,25 +52,25 @@ const validateLogin = [
 // });
 
 router.get("/", restoreUser, async (req, res) => {
-  if (!req.user) {
+  if (!req.User) {
     return res.status(200).json({ user: null });
   }
 
   // Assuming you have a Spot model associated with the user
-  const user = req.user.dataValues;
+  const user = req.User.dataValues;
 
   // Fetch spots owned by the current user
   const spots = await Spot.findAll({
-    where: { ownerId: user.id },
+    where: { ownerId: User.id },
     attributes: ["id", "ownerId", "address", "city", "state", "country", "lat", "lng", "name", "description", "price", "createdAt", "updatedAt"],
     // If avgRating and previewImage are stored in other tables (e.g., reviews or images), you may need to include associations here.
     include: [
       {
         model: Review, // Assuming you have a Review model for ratings
-        attributes: [[Sequelize.fn("AVG", Sequelize.col("rating")), "avgRating"]],
+        attributes: [[Sequelize.fn("AVG", Sequelize.col("stars")), "avgRating"]],
       },
       {
-        model: Image, // Assuming you have an Image model for preview images
+        model: SpotImage, // Assuming you have an Image model for preview images
         attributes: ["url"],
         where: { preview: true },
         required: false, // Include even if there is no preview image
@@ -94,8 +95,8 @@ router.get("/", restoreUser, async (req, res) => {
       price: spot.price,
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
-      avgRating: spot.Reviews[0]?.avgRating || null, // Use the aggregated average rating
-      previewImage: spot.Images[0]?.url || null, // Use the first preview image if available
+      // avgRating: spot.Reviews[0]?.avgRating || null, // Use the aggregated average rating
+      // previewImage: spot.Images[0]?.url || null, // Use the first preview image if available
     };
   });
 
