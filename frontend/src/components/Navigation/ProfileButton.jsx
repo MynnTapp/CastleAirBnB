@@ -18,6 +18,10 @@ function ProfileButton({ user }) {
     setShowMenu(!showMenu);
   };
 
+  const handleMenuClick = (e) => {
+    e.stopPropagation(); // This prevents the dropdown from closing
+  };
+
   useEffect(() => {
     if (!showMenu) return;
 
@@ -46,8 +50,9 @@ function ProfileButton({ user }) {
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
-          <>
-            <li>{user.username}</li>
+          <div onClick={handleMenuClick}>
+            <li>Hello {user.firstName}</li>
+            <li> {user.username}</li>
             <li>
               {user.firstName} {user.lastName}
             </li>
@@ -55,7 +60,7 @@ function ProfileButton({ user }) {
             <li>
               <button onClick={logout}>Log Out</button>
             </li>
-          </>
+          </div>
         ) : (
           <>
             <li>

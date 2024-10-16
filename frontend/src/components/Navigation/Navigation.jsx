@@ -41,10 +41,10 @@
 
 // export default Navigation;
 
-import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
+import { NavLink } from "react-router-dom";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -52,9 +52,9 @@ function Navigation({ isLoaded }) {
   return (
     <ul>
       <div className="nav-left">
-        <li className="createSpot">
-          <NavLink to="/">create a spot</NavLink>
-        </li>
+        <NavLink to="/">
+          <li className="createSpot">Create Spot</li>
+        </NavLink>
       </div>
       {isLoaded && (
         <li>

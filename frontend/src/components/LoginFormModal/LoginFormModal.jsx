@@ -24,6 +24,21 @@ function LoginFormModal() {
       });
   };
 
+  const handleDemoLogin = (e) => {
+    e.preventDefault();
+    setErrors({});
+    return dispatch(sessionActions.login({ credential: "Demo-lition", password: "password" }))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) {
+          setErrors(data.errors);
+        }
+      });
+  };
+
+  const isButtonDisabled = credential.length < 4 || password.length < 6;
+
   return (
     <>
       <h1>Log In</h1>
@@ -37,7 +52,10 @@ function LoginFormModal() {
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </label>
         {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+        <button type="submit" disabled={isButtonDisabled}>
+          Log In
+        </button>
+        <button onClick={handleDemoLogin}>Log in as Demo User</button>
       </form>
     </>
   );
