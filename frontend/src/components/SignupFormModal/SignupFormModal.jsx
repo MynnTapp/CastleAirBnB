@@ -41,6 +41,8 @@ function SignupFormModal() {
     });
   };
 
+  const isButtonDisabled = !email || !username || !firstName || !lastName || !password || !confirmPassword || username.length < 4 || password.length < 6;
+
   return (
     <>
       <h1>Sign Up</h1>
@@ -75,7 +77,9 @@ function SignupFormModal() {
           <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={isButtonDisabled}>
+          Sign Up
+        </button>
       </form>
     </>
   );

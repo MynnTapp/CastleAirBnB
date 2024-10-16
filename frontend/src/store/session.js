@@ -45,13 +45,33 @@ const sessionReducer = (state = initialState, action) => {
       return state;
   }
 };
+/////////////////////////////
+
+// export const restoreUser = () => async (dispatch) => {
+//   const response = await csrfFetch("/api/session");
+//   const data = await response.json();
+//   dispatch(setUser(data.user));
+//   return response;
+// };
 
 export const restoreUser = () => async (dispatch) => {
-  const response = await csrfFetch("/api/session");
+  const response = await fetch("/api/session", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+    },
+  });
   const data = await response.json();
-  dispatch(setUser(data.user));
-  return response;
+  if (data.user) {
+    dispatch(setUser(data.user));
+  } else {
+    dispatch(removeUser());
+  }
+  return data;
 };
+
+//////////////////////////////////
 
 export const signup = (user) => async (dispatch) => {
   const { username, firstName, lastName, email, password } = user;
