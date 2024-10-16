@@ -51,9 +51,11 @@ function Navigation({ isLoaded }) {
 
   return (
     <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
+      <div className="nav-left">
+        <li className="createSpot">
+          <NavLink to="/">create a spot</NavLink>
+        </li>
+      </div>
       {isLoaded && (
         <li>
           <ProfileButton user={sessionUser} />

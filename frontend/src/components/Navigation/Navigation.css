@@ -1,19 +1,19 @@
 /* frontend/src/components/Navigation/Navigation.css */
+/* 
 
-ul {
-  list-style: none;
-  display: flex;
-}
+/* Container for the navigation */
 
-.profile-dropdown {
-  position: absolute;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-}
-
-.hidden {
-  display: none;
+/* Left side (Logo/Home Link) */
+.nav-left {
+  display: flex; /* Enables flexbox */
+  flex-flow: row nowrap; /* Align items in a row */
+  justify-content: flex-start; /* Aligns items to the left */
+  margin-right: auto; /* Pushes it to the left, if needed */
+  left: 190px;
+  color: white; /* Text color */
+  align-items: center; /* Centers items vertically */
+  padding: 0 80px; /* Adds horizontal padding */
+  height: 60px; /* Height for the nav bar */
+  position: relative; /* Allows positioning of child elements */
+  background-color: #ff0099; /* Example background color */
 }
