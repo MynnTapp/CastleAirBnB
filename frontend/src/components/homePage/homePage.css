@@ -7,3 +7,50 @@ img {
 body {
   background-color: pink;
 }
+
+/* Container for the grid */
+/* Container for the grid */
+.castle-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Create 2 columns */
+  gap: 26px; /* Space between grid items */
+  padding: 20px;
+}
+
+/* Individual grid items */
+.castle-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  height: 400px; /* Adjust the height as needed */
+  width: 400px;
+}
+
+/* Images inside the grid items */
+.castle-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease; /* Smooth zoom-in effect */
+}
+
+/* Hover effect for images */
+.castle-item:hover img {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Optional caption styling */
+.castle-caption {
+  position: absolute;
+  bottom: 10px;
+  left: 330px;
+  right: 10px;
+  padding: 10px;
+  bottom: 40px;
+
+  color: #fff;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1rem;
+}
