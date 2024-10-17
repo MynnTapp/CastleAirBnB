@@ -39,7 +39,6 @@ body {
 .castle-item:hover img {
   transform: scale(1.05); /* Slight zoom on hover */
 }
-
 /* Optional caption styling */
 .castle-caption {
   position: absolute;
@@ -53,4 +52,8 @@ body {
   border-radius: 5px;
   text-align: center;
   font-size: 1rem;
+}
+
+.info {
+  color: white;
 }
