@@ -1,0 +1,117 @@
+.spot-detail {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+.spot-detail h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.spot-detail p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.spot-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.large-image {
+  width: 450px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.small-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+}
+
+.location {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.spot-host {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.callout-box {
+  background-color: #f7f7f7;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.callout-box p {
+  margin: 0;
+}
+
+.callout-box button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.callout-box button:hover {
+  background-color: #0056b3;
+}
+
+.logo {
+  margin-left: -250px;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+}
+
+.fourphotos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0px; /* Adjust the gap between images as you like */
+  margin-right: 600px;
+  column-gap: 0px;
+  row-gap: 55px;
+  margin-left: 450px;
+  margin-top: -570px;
+}
+
+.fourphotos img {
+  width: 200px;
+  height: 220px;
+  margin-left: 2px;
+}
+
+.movebutton {
+  margin-top: 140px;
+  margin-left: 750px;
+  border-color: purple;
+  width: 100px;
+}
+
+.featurebutton {
+  width: 150px;
+  margin-left: 100px;
+  margin-top: 36px;
+}
+.buttonborder {
+  padding-top: 20px;
+  border: 3px solid rgb(255, 47, 141);
+  background-color: rgb(255, 47, 141);
+  width: 360px;
+  height: 100px;
+  margin-left: 460px;
+  margin-top: 60px;
+}

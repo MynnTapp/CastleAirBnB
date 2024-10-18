@@ -2,7 +2,7 @@ import logo from "./images/princess_castle_airbnb_logo.png";
 import "./homePage.css";
 import { Link } from "react-router-dom";
 import castle1 from "./CastleImages/800_3642382_crbbsgag7woq5l6ffzcekzmp3v6pn2mduy3m0s6z.jpg";
-import castle2 from "./CastleImages/aHR0cHM6Ly9iLnN0YWJsZWNvZy5jb20vMGU3ZjAzNzgtODBkYS00YjNmLWIxYjMtYzY3N2QyZDM4MTY1LmpwZWc.webp";
+import castle2 from "./CastleImages/Fairy-House-Kawaii-Magic-Castle-63104854-1 (1).png";
 import castle3 from "./CastleImages/castle_in_the_sky_by_misconceptionaiart_dfxz8nm-pre.jpg";
 import castle4 from "./CastleImages/Inside_and_Seek_(20).png";
 

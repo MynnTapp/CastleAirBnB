@@ -41,6 +41,32 @@
 
 // export default Navigation;
 
+// import { useSelector } from "react-redux";
+// import ProfileButton from "./ProfileButton";
+// import "./Navigation.css";
+// import { NavLink } from "react-router-dom";
+
+// function Navigation({ isLoaded }) {
+//   const sessionUser = useSelector((state) => state.session.user);
+
+//   return (
+//     <ul>
+//       <div className="nav-left">
+//         <NavLink to="/">
+//           <li className="createSpot">Create Spot</li>
+//         </NavLink>
+//       </div>
+//       {isLoaded && (
+//         <li>
+//           <ProfileButton user={sessionUser} />
+//         </li>
+//       )}
+//     </ul>
+//   );
+// }
+
+// export default Navigation;
+
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
@@ -52,9 +78,11 @@ function Navigation({ isLoaded }) {
   return (
     <ul>
       <div className="nav-left">
-        <NavLink to="/">
-          <li className="createSpot">Create Spot</li>
-        </NavLink>
+        {sessionUser && ( // Conditionally render the Create Spot button
+          <NavLink to="/create-spot">
+            <li className="createSpot">Create Spot</li>
+          </NavLink>
+        )}
       </div>
       {isLoaded && (
         <li>
