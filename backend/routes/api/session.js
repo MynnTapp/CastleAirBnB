@@ -151,34 +151,77 @@ router.get("/", restoreUser, async (req, res) => {
 //   }
 // });
 
+// router.post("/", validateLogin, async (req, res, next) => {
+//   try {
+//     const { credential, password } = req.body;
+
+//     // Check if both credential and password are provided
+//     const errors = {};
+//     if (!credential) errors.credential = "Email or username is required";
+//     if (!password) errors.password = "Password is required";
+
+//     // If there are validation errors, respond with a 400 status code and the errors
+//     if (Object.keys(errors).length > 0) {
+//       return res.status(400).json({
+//         message: "Bad Request",
+//         errors: errors,
+//       });
+//     }
+
+//     // Proceed with finding the user if validation passes
+//     const user = await User.unscoped().findOne({
+//       where: {
+//         [Op.or]: {
+//           username: credential,
+//           email: credential,
+//         },
+//       },
+//     });
+
+//     // If no user is found or password is incorrect, respond with an error
+//     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
+//       const err = new Error("Invalid credentials");
+//       err.status = 401;
+//       err.title = "Login failed";
+//       err.errors = { credential: "Invalid credentials" };
+//       return next(err);
+//     }
+
+//     // Construct safe user object
+//     const safeUser = {
+//       id: user.id,
+//       firstName: user.firstName,
+//       lastName: user.lastName,
+//       email: user.email,
+//       username: user.username,
+//     };
+
+//     // Set token cookie and respond with user info
+//     await setTokenCookie(res, safeUser);
+
+//     return res.json({
+//       user: safeUser,
+//       token,
+//     });
+//   } catch (error) {
+//     console.error(error); // Log the error for debugging
+//     res.status(500).json({
+//       message: "Error logging in",
+//       error: error.message, // Return the error message
+//     });
+//   }
+// });
+///////////////////////////////////////////////
+
 router.post("/", validateLogin, async (req, res, next) => {
   try {
     const { credential, password } = req.body;
-
-    // Check if both credential and password are provided
-    const errors = {};
-    if (!credential) errors.credential = "Email or username is required";
-    if (!password) errors.password = "Password is required";
-
-    // If there are validation errors, respond with a 400 status code and the errors
-    if (Object.keys(errors).length > 0) {
-      return res.status(400).json({
-        message: "Bad Request",
-        errors: errors,
-      });
-    }
-
-    // Proceed with finding the user if validation passes
     const user = await User.unscoped().findOne({
       where: {
-        [Op.or]: {
-          username: credential,
-          email: credential,
-        },
+        [Op.or]: { username: credential, email: credential },
       },
     });
 
-    // If no user is found or password is incorrect, respond with an error
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
       const err = new Error("Invalid credentials");
       err.status = 401;
@@ -187,7 +230,6 @@ router.post("/", validateLogin, async (req, res, next) => {
       return next(err);
     }
 
-    // Construct safe user object
     const safeUser = {
       id: user.id,
       firstName: user.firstName,
@@ -196,18 +238,11 @@ router.post("/", validateLogin, async (req, res, next) => {
       username: user.username,
     };
 
-    // Set token cookie and respond with user info
-    await setTokenCookie(res, safeUser);
-
-    return res.json({
-      user: safeUser,
-    });
+    const token = await setTokenCookie(res, safeUser);
+    return res.json({ user: safeUser, token });
   } catch (error) {
-    console.error(error); // Log the error for debugging
-    res.status(500).json({
-      message: "Error logging in",
-      error: error.message, // Return the error message
-    });
+    console.error(error);
+    res.status(500).json({ message: "Error logging in", error: error.message });
   }
 });
 

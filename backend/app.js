@@ -12,11 +12,14 @@ const { environment } = require("./config");
 const isProduction = environment === "production";
 const { ValidationError } = require("sequelize");
 const csrfRouter = require("../backend/routes/index");
+const { restoreUser, refreshToken } = require("./utils/auth");
 
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api", csrfRouter);
+app.use(restoreUser);
+app.use(refreshToken);
 
 // Security Middleware
 if (!isProduction) {
