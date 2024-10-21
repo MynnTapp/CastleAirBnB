@@ -32,13 +32,49 @@ const setTokenCookie = (res, user) => {
   return token;
 };
 
+// const restoreUser = (req, res, next) => {
+//   // token parsed from cookies
+//   const { token } = req.cookies;
+//   req.user = null;
+
+//   return jwt.verify(token, secret, null, async (err, jwtPayload) => {
+//     if (err) {
+//       return next();
+//     }
+
+//     try {
+//       const { id } = jwtPayload.data;
+//       req.user = await User.findByPk(id, {
+//         attributes: {
+//           include: ["email", "createdAt", "updatedAt"],
+//         },
+//       });
+//     } catch (e) {
+//       res.clearCookie("token");
+//       return next();
+//     }
+
+//     if (!req.user) res.clearCookie("token");
+
+//     return next();
+//   });
+// };
+
 const restoreUser = (req, res, next) => {
-  // token parsed from cookies
+  // Parse token from cookies
   const { token } = req.cookies;
-  req.user = null;
+
+  req.user = User;
+
+  if (!token) {
+    console.log("No token found in cookies");
+    return next(); // If no token, continue without restoring user
+  }
 
   return jwt.verify(token, secret, null, async (err, jwtPayload) => {
     if (err) {
+      console.log("JWT verification error:", err); // Log error if token verification fails
+      res.clearCookie("token");
       return next();
     }
 
@@ -49,15 +85,29 @@ const restoreUser = (req, res, next) => {
           include: ["email", "createdAt", "updatedAt"],
         },
       });
+
+      if (!req.user) {
+        console.log("User not found in database");
+        res.clearCookie("token"); // Clear token if user not found
+      } else {
+        console.log(`User restored: ${req.user.username}`);
+      }
     } catch (e) {
-      res.clearCookie("token");
-      return next();
+      console.log("Error finding user by ID:", e);
+      res.clearCookie("token"); // Clear token if error occurs during user lookup
     }
 
-    if (!req.user) res.clearCookie("token");
-
-    return next();
+    return next(); // Proceed to next middleware or route handler
   });
+};
+
+const refreshToken = async (req, res, next) => {
+  // If the user is authenticated, issue a new token and reset the cookie
+  if (req.user) {
+    const newToken = setTokenCookie(res, req.user);
+    req.token = newToken; // Optional: Attach the new token to the request object
+  }
+  next(); // Proceed to the next middleware or route handler
 };
 
 // If there is no current user, return an error
@@ -71,4 +121,4 @@ const requireAuth = function (req, _res, next) {
   return next(err);
 };
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+module.exports = { setTokenCookie, restoreUser, requireAuth, refreshToken };

@@ -221,78 +221,153 @@ router.post("/", restoreUser, requireAuth, validateSpotData, async (req, res) =>
 });
 
 /**** GET current user's spots ****/
+// router.get("/current", restoreUser, requireAuth, async (req, res, next) => {
+//   try {
+//     const { user } = req;
+
+//     // Restore user ensures user is loggedin
+//     if (user) {
+//       const userId = user.id;
+
+//       // Capture user's spot listings + associated preview images
+//       const userSpots = await Spot.findAll({
+//         where: { ownerId: userId },
+//         include: [
+//           // Fetch images
+//           {
+//             model: SpotImage,
+//             where: { preview: true }, // Include only where there are pics
+//             required: false, // without voiding query if no pics
+//             attributes: ["url"],
+//           },
+//           {
+//             model: Review, // Fetch reviews for forthcoming aggregation
+//             attributes: [],
+//           },
+//         ],
+//         attributes: [
+//           // DELETE. not listing any would pull all atts? listing some will pull that exclusive list of atts?
+//           "id",
+//           "ownerId",
+//           "address",
+//           "city",
+//           "state",
+//           "country",
+//           "lat",
+//           "lng",
+//           "name",
+//           "description",
+//           "price",
+//           "createdAt",
+//           "updatedAt",
+//           [Sequelize.fn("AVG", Sequelize.col("Reviews.stars")), "avgRating"],
+//         ],
+//         group: ["Spot.id", "SpotImages.id"],
+//       });
+
+//       // Capture spots in array indexes
+//       const userSpotsArray = userSpots.map((userSpots) => ({
+//         id: userSpots.id,
+//         ownerId: userSpots.ownerId,
+//         address: userSpots.address,
+//         city: userSpots.city,
+//         state: userSpots.state,
+//         country: userSpots.country,
+//         lat: userSpots.lat,
+//         lng: userSpots.lng,
+//         name: userSpots.name,
+//         description: userSpots.description,
+//         price: userSpots.price,
+//         createdAt: userSpots.createdAt,
+//         updatedAt: userSpots.updatedAt,
+//         avgRating: parseFloat(userSpots.get("avgRating")).toFixed(1) || null,
+//         previewImage: userSpots.SpotImages.length ? userSpots.SpotImages[0].url : null,
+//       }));
+
+//       // Encapsulate spots in object
+//       return res.status(200).json({ Spots: userSpotsArray });
+//     } else {
+//       return res.status(401).json({ message: "Authentication required" });
+//     }
+//   } catch (error) {
+//     // Pass query or response error for handdling
+//     next(error);
+//   }
+// });
+
 router.get("/current", restoreUser, requireAuth, async (req, res, next) => {
-  try {
-    const { user } = req;
+  // try {
+  //   const { user } = req;
+  //   if (user) {
+  //     const userId = user.id;
+  //     const userSpots = await Spot.findAll({
+  //       where: { ownerId: userId },
+  //       include: [
+  //         {
+  //           model: SpotImage,
+  //           where: { preview: true },
+  //           required: false,
+  //           attributes: ["url"],
+  //         },
+  //         {
+  //           model: Review,
+  //           attributes: [],
+  //         },
+  //       ],
+  //       attributes: [
+  //         "id",
+  //         "ownerId",
+  //         "address",
+  //         "city",
+  //         "state",
+  //         "country",
+  //         "lat",
+  //         "lng",
+  //         "name",
+  //         "description",
+  //         "price",
+  //         "createdAt",
+  //         "updatedAt",
+  //         [Sequelize.fn("AVG", Sequelize.col("Reviews.stars")), "avgRating"],
+  //       ],
+  //       group: ["Spot.id", "SpotImages.id"],
+  //     });
 
-    // Restore user ensures user is loggedin
-    if (user) {
-      const userId = user.id;
+  //     const userSpotsArray = userSpots.map((userSpot) => ({
+  //       id: userSpot.id,
+  //       ownerId: userSpot.ownerId,
+  //       address: userSpot.address,
+  //       city: userSpot.city,
+  //       state: userSpot.state,
+  //       country: userSpot.country,
+  //       lat: userSpot.lat,
+  //       lng: userSpot.lng,
+  //       name: userSpot.name,
+  //       description: userSpot.description,
+  //       price: userSpot.price,
+  //       createdAt: userSpot.createdAt,
+  //       updatedAt: userSpot.updatedAt,
+  //       avgRating: parseFloat(userSpot.get("avgRating")).toFixed(1) || null,
+  //       previewImage: userSpot.SpotImages.length ? userSpot.SpotImages[0].url : null,
+  //     }));
 
-      // Capture user's spot listings + associated preview images
-      const userSpots = await Spot.findAll({
-        where: { ownerId: userId },
-        include: [
-          // Fetch images
-          {
-            model: SpotImage,
-            where: { preview: true }, // Include only where there are pics
-            required: false, // without voiding query if no pics
-            attributes: ["url"],
-          },
-          {
-            model: Review, // Fetch reviews for forthcoming aggregation
-            attributes: [],
-          },
-        ],
-        attributes: [
-          // DELETE. not listing any would pull all atts? listing some will pull that exclusive list of atts?
-          "id",
-          "ownerId",
-          "address",
-          "city",
-          "state",
-          "country",
-          "lat",
-          "lng",
-          "name",
-          "description",
-          "price",
-          "createdAt",
-          "updatedAt",
-          [Sequelize.fn("AVG", Sequelize.col("Reviews.stars")), "avgRating"],
-        ],
-        group: ["Spot.id", "SpotImages.id"],
-      });
+  //     return res.status(200).json({ Spots: userSpotsArray }); // Ensure this returns an array
+  //   } else {
+  //     return res.status(401).json({ message: "Authentication required" });
+  //   }
+  // } catch (error) {
+  //   next(error);
+  // }
 
-      // Capture spots in array indexes
-      const userSpotsArray = userSpots.map((userSpots) => ({
-        id: userSpots.id,
-        ownerId: userSpots.ownerId,
-        address: userSpots.address,
-        city: userSpots.city,
-        state: userSpots.state,
-        country: userSpots.country,
-        lat: userSpots.lat,
-        lng: userSpots.lng,
-        name: userSpots.name,
-        description: userSpots.description,
-        price: userSpots.price,
-        createdAt: userSpots.createdAt,
-        updatedAt: userSpots.updatedAt,
-        avgRating: parseFloat(userSpots.get("avgRating")).toFixed(1) || null,
-        previewImage: userSpots.SpotImages.length ? userSpots.SpotImages[0].url : null,
-      }));
+  const userId = req.user.id;
 
-      // Encapsulate spots in object
-      return res.status(200).json({ Spots: userSpotsArray });
-    } else {
-      return res.status(401).json({ message: "Authentication required" });
-    }
-  } catch (error) {
-    // Pass query or response error for handdling
-    next(error);
-  }
+  const spots = await Spot.scope("user").findAll({
+    where: {
+      ownerId: userId,
+    },
+  });
+
+  res.json({ Spots: spots });
 });
 
 /**** GET spot details on id ****/
@@ -307,7 +382,7 @@ router.get("/:spotId", async (req, res, next) => {
       include: [
         {
           model: SpotImage,
-          attributes: ["id", "url", "preview"],
+          attributes: ["id", "url", "preview"], //removed url, put back if not working
         },
         {
           model: User,

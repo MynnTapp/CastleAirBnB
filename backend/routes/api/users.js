@@ -19,11 +19,59 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
+// router.post("/", validateSignup, async (req, res) => {
+//   const { email, password, username, firstName, lastName } = req.body;
+//   const hashedPassword = bcrypt.hashSync(password);
+//   try {
+//     const user = await User.create({ email, firstName, lastName, username, hashedPassword });
+//     const safeUser = {
+//       id: user.id,
+//       firstName: user.firstName,
+//       lastName: user.lastName,
+//       email: user.email,
+//       username: user.username,
+//     };
+//     await setTokenCookie(res, safeUser);
+//     return res.status(201).json({
+//       user: safeUser,
+//     });
+//   } catch (error) {
+//     if (error.name === "SequelizeUniqueConstraintError") {
+//       const errors = {};
+//       error.errors.forEach((err) => {
+//         if (err.path === "email") {
+//           errors.email = "User with that email already exists";
+//         } else if (err.path === "username") {
+//           errors.username = "User with that username already exists";
+//         }
+//       });
+//       return res.status(500).json({
+//         message: "User already exists",
+//         errors,
+//       });
+//     }
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// });
+
+// const secret = process.env.JWT_SECRET; // Ensure you have this secret set in your .env file
+
+const jwt = require("jsonwebtoken");
+const secret = process.env.JWT_SECRET; // Make sure you have this set in your .env file
+
 router.post("/", validateSignup, async (req, res) => {
   const { email, password, username, firstName, lastName } = req.body;
   const hashedPassword = bcrypt.hashSync(password);
+
   try {
-    const user = await User.create({ email, firstName, lastName, username, hashedPassword });
+    const user = await User.create({
+      email,
+      firstName,
+      lastName,
+      username,
+      hashedPassword,
+    });
+
     const safeUser = {
       id: user.id,
       firstName: user.firstName,
@@ -31,9 +79,16 @@ router.post("/", validateSignup, async (req, res) => {
       email: user.email,
       username: user.username,
     };
+
+    // Sign the token with the user data
+    const token = jwt.sign({ data: { id: user.id, username, email } }, secret, { expiresIn: "1h" });
+    console.log("Generated token:", token); // Add this log for debugging
+
     await setTokenCookie(res, safeUser);
+
     return res.status(201).json({
       user: safeUser,
+      token, // Include the token in the response
     });
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
@@ -45,11 +100,14 @@ router.post("/", validateSignup, async (req, res) => {
           errors.username = "User with that username already exists";
         }
       });
+
       return res.status(500).json({
         message: "User already exists",
         errors,
       });
     }
+
+    console.error("Error creating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
