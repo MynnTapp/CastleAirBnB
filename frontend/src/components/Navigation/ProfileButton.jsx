@@ -169,7 +169,7 @@ import * as sessionActions from "../../store/session";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./profileButton.css";
 
 function ProfileButton() {
@@ -224,9 +224,9 @@ function ProfileButton() {
             </li>
             <li>{user.email}</li>
             <li>
-              <Link to="spots/current" className="manage-spots-link">
+              <NavLink to="spots/current" className="manage-spots-link">
                 Manage Spots
-              </Link>
+              </NavLink>
             </li>
             <li>
               <button onClick={logout}>Log Out</button>

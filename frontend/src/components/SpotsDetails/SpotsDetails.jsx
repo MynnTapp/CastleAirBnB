@@ -38,7 +38,7 @@ import "./SpotsDetails.css";
 // };
 
 // export default SpotDetail;
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 import "./SpotsDetails.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
